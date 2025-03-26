@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 export const sendVerificationEmail = async (email, verificationToken) => {
 	const mapObj = {
-		appName: "appName",
+		appName: "WIGS",
 		verificationToken,
 	}
 
@@ -24,7 +24,7 @@ export const sendVerificationEmail = async (email, verificationToken) => {
 		const info = await transporter.sendMail({
 			from: process.env.NODEMAILER_GMAIL_USER,
 			to: email,
-			subject: "[appName] Verify your email",
+			subject: "[WIGS] Verify your email",
 			html: verificationTokenEmailTemplate.replace(
 				/\b(?:appName|verificationToken)\b/gi,
 				(matched) => mapObj[matched]
@@ -40,7 +40,7 @@ export const sendVerificationEmail = async (email, verificationToken) => {
 
 export const sendWelcomeEmail = async (email, name) => {
 	const mapObj = {
-		appName: "appName",
+		appName: "WIGS",
 		userName: name,
 		documentationUrl: `${process.env.CLIENT_URL}/documentation`,
 	}
@@ -49,7 +49,7 @@ export const sendWelcomeEmail = async (email, name) => {
 		const info = await transporter.sendMail({
 			from: process.env.NODEMAILER_GMAIL_USER,
 			to: email,
-			subject: "[appName] Welcome to appName!",
+			subject: "[WIGS] Welcome to WIGS!",
 			html: welcomeEmailTemplate.replace(
 				/\b(?:appName|userName|documentationUrl)\b/gi,
 				(matched) => mapObj[matched]
@@ -64,12 +64,20 @@ export const sendWelcomeEmail = async (email, name) => {
 }
 
 export const sendPasswordResetEmail = async (email, link) => {
+	const mapObj = {
+		appName: "WIGS",
+		resetPasswordUrl: link,
+	}
+
 	try {
 		const info = await transporter.sendMail({
 			from: process.env.NODEMAILER_GMAIL_USER,
 			to: email,
-			subject: "[appName] Reset your password!",
-			html: resetPasswordEmailTemplate.replace("resetPasswordUrl", link),
+			subject: "[WIGS] Reset your password!",
+			html: resetPasswordEmailTemplate.replace(
+				/\b(?:appName|resetPasswordUrl)\b/gi,
+				(matched) => mapObj[matched]
+			),
 		})
 
 		console.log("Password reset email sent:", info)
@@ -80,14 +88,19 @@ export const sendPasswordResetEmail = async (email, link) => {
 }
 
 export const sendResetPasswordSuccessEmail = async (email) => {
+	const mapObj = {
+		appName: "WIGS",
+		loginUrl: `${process.env.CLIENT_URL}/auth/login`,
+	}
+
 	try {
 		const info = await transporter.sendMail({
 			from: process.env.NODEMAILER_GMAIL_USER,
 			to: email,
-			subject: "[appName] Password reset successful",
+			subject: "[WIGS] Password reset successful",
 			html: resetPasswordSuccessEmailTemplate.replace(
-				"loginUrl",
-				`${process.env.CLIENT_URL}/auth/login`
+				/\b(?:appName|loginUrl)\b/gi,
+				(matched) => mapObj[matched]
 			),
 		})
 
