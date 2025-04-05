@@ -46,6 +46,7 @@ export const register = async (req, res) => {
 
 		await newUser.save()
 		generateJWTToken(res, newUser._id)
+		await generateBoilerplateData(newUser._id)
 		await sendVerificationEmail(newUser.email, newUser.verificationToken)
 
 		res.status(201).json({

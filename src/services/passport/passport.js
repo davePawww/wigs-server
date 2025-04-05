@@ -4,6 +4,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20"
 import bcrypt from "bcryptjs"
 import User from "../../model/user.model.js"
 import { sendWelcomeEmail } from "../nodemailer/mailer.js"
+import { generateBoilerplateData } from "../generateBoilerplateData.js"
 
 const passportService = () => {
 	passport.use(
@@ -60,6 +61,7 @@ const passportService = () => {
 					})
 
 					await newUser.save()
+					await generateBoilerplateData(newUser._id)
 					await sendWelcomeEmail(newUser.email, newUser.name)
 
 					done(null, newUser)
