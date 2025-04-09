@@ -12,7 +12,7 @@ const authorizeJWT = (req, res, next) => {
 
 	try {
 		const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET)
-		req.userId = decoded
+		req.auth = decoded
 		next()
 	} catch (err) {
 		return res.status(401).json({

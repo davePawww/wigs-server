@@ -1,8 +1,9 @@
 import { Router } from "express"
-import { getAllById } from "./wigs.controller.js"
+import { getUserWigs } from "./wigs.controller.js"
+import { authorizeJWT } from "../../middleware/auth.js"
 
 const router = Router()
 
-router.get("/findById", getAllById)
+router.get("/getUserWigs", authorizeJWT, getUserWigs)
 
 export default router
